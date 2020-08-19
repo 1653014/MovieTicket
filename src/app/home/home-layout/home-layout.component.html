@@ -1,0 +1,444 @@
+<div class="container-fluid">
+    <div class="row">
+        <header id="header">
+            <a href="#carouselExampleControls" class="logo">
+                <img src="../../../assets/images/web-logo.png" alt="">
+            </a>
+            <nav class="header__menu animated bounce" id="animaMenu">
+                <ul class="mb-0">
+                    <li>
+                        <a class="navbar__link" (click)="reload()" href="#carouselExampleControls">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a class="navbar__link" href="#dsphim">Phim đang chiếu</a>
+                    </li>
+                    <li>
+                        <a routerLink="/ve-da-dat" class="navbar__link">Vé đã đặt</a>
+
+                    </li>
+                    <li>
+                        <a href="#tintuc" class="navbar__link">Tin Tức</a>
+                    </li>
+                    <li>
+                        <a href="#lienhe" class="navbar__link">Liên hệ</a>
+                    </li>
+
+
+
+                    <!-- <li *ngIf="!isLogin; else isLoginTemplate" class="nav-item">
+                                <a class="nav-link myNavItem text-white" style="cursor:pointer" data-toggle="modal" data-target="#myModal">Đăng nhập</a>
+                            </li> -->
+
+
+                </ul>
+            </nav>
+            <!-- (click)="DangNhap(taiKhoandangnhap.value,matKhaudangnhap.value)" -->
+            <div class="dropdown figue__2" *ngIf="!isLogin; else isLoginTemplate">
+                <button class="btn btn-primary  dropdown-toggle " type="button" data-toggle="dropdown">Đăng nhập</button>
+                <ul class="dropdown-menu dropdown-lr animated move" role="menu">
+                    <form [formGroup]="registerForm" (ngSubmit)="DangNhap(taiKhoandangnhap.value,matKhaudangnhap.value)">
+                        <div class="form-group nutdangnhap">
+                            <label for="username">Tài khoản</label>
+                            <input #taiKhoandangnhap type="text" name="username" tabindex="1" class="form-control"
+                                placeholder="Tài khoản" autocomplete="off" value="{{taikhoanr}}" autofocus
+                                formControlName="taikhoan" [ngClass]="{ 'is-invalid': submitted && f.taikhoan.errors }">
+                            <div *ngIf="submitted && f.taikhoan.errors" class="invalid-feedback">
+                                <div *ngIf="f.taikhoan.errors.required">Vui lòng nhập tài khoản</div>
+                                <div *ngIf="f.taikhoan.errors.pattern">Tài khoản chứa kí tự đặc biệt</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group nutdangnhap">
+                            <label for="password">Mật khẩu</label>
+                            <input #matKhaudangnhap type="password" name="password" tabindex="2" class="form-control"
+                                placeholder="Mật khẩu" autocomplete="off" value="{{matkhaur}}" formControlName="matkhau"
+                                [ngClass]="{ 'is-invalid': submitted && f.matkhau.errors }">
+                            <div *ngIf="submitted && f.matkhau.errors" class="invalid-feedback">
+                                <div *ngIf="f.matkhau.errors.required">Vui lòng nhập mật khẩu</div>
+                                <div *ngIf="f.matkhau.errors.minlength">Mật khẩu lớn hơn 5 kí tự</div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <input type="checkbox" [checked]="check" (change)="Remember($event)" name="remember" class="remember">
+                            <label for="remember">Nhớ mật khẩu</label>
+                        </div>
+
+                        <div class="cacbutton">
+
+                            <input type="submit" name="login-submit" id="login-submit" class="btn btn-success" value="Đăng nhập">
+                            <!-- <button class="btn btn-success" type="submit" (click)="DangNhap(taiKhoandangnhap.value,matKhaudangnhap.value)">Đăng nhập</button> -->
+
+                        </div>
+
+                    </form>
+                    <button class="btn btn-primary nutdangki" data-toggle="modal" data-target="#dangki">Đăng kí</button>
+
+
+                    <div class="text-center">
+                        <a href="" data-toggle="modal" data-target="#forgetpass" class="forgot-password">Quên mật khẩu?</a>
+                    </div>
+                    <!-- <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center">
+                                    <a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Forgot
+                                        Password?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </ul>
+            </div>
+
+
+        </header>
+
+    </div>
+
+</div>
+<ng-template #isLoginTemplate>
+    <!-- <div class="signin" type="button" data-toggle="dropdown">
+            <i class="fa fa-user-circle fa-10x"></i>
+            <a style="cursor:pointer" (click)="DangXuat()">
+                Đăng xuất
+            </a>
+        </div> -->
+    <i class="fa fa-user-circle fa-3x" data-toggle="dropdown" style="cursor:pointer"></i>
+    <ul class="dropdown-menu" id="dropuser">
+        <li><a href="#" style="cursor:pointer" data-toggle="modal" data-target="#chinhsua" (click)="clickchinhsua()">Sửa
+                thông tin</a></li>
+        <li><a href="#" style="cursor:pointer" data-toggle="modal" data-target="#doimatkhau">Đổi mật khẩu</a></li>
+        <li><a href="#" (click)="DangXuat()">Đăng xuất</a></li>
+    </ul>
+</ng-template>
+
+
+<router-outlet></router-outlet>
+
+<!-- <footer class="bg-dark py-3">
+    <h6 class="text-center text-white">Footer</h6>
+</footer> -->
+
+<!-- FOOTER -->
+<section class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer__item col-md-6">
+                <h3>Subscribe Newsletter</h3>
+                <p class="footer__text1">By subscribing to our mailing list you will always get latest news from us.</p>
+            </div>
+            <div class="footer__item col-md-3">
+                <h3>Our Links</h3>
+                <div class="footer__contact">
+                    <li>
+                        <a href="#carouselExampleControls">Home</a>
+                    </li>
+                    <li>
+                        <a href="#dsphim">Movie</a>
+                    </li>
+                    <li>
+                        <a href="#tintuc">News</a>
+                    </li>
+                    <li>
+                        <a href="#lienhe">Contact</a>
+                    </li>
+                </div>
+
+
+            </div>
+            <div class="footer__item col-md-3">
+                <h3>Contact Us</h3>
+                <p class="footer__text2">
+                    <i class="fa fa-map-marker"></i> 227 Nguyen Van Cu, Distric 5, Ho Chi Minh City.</p>
+                <p class="footer__text3">
+                    <i class="fa fa-envelope"></i>
+                    <a href="">admin@gmail.com</a>
+                </p>
+                <p class="footer__text4">
+                    <i class="fa fa-phone"></i> +1234 567 567</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END FOOTER -->
+
+
+<button id="btnDangNhap" style="display: none" type="button" class="btn btn-primary">
+    Open modal
+</button>
+
+<div class="modal fade" id="forgetpass">
+    <form (ngSubmit)="QuenMatKhau(taikhoanlay.value,emaillay.value,cmndlay.value)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Lấy lại mật khấu</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input #taikhoanlay class="form-control" placeholder="Tài khoản" required>
+                    </div>
+                    <div class="form-group">
+                        <input #emaillay class="form-control" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input #cmndlay class="form-control" placeholder="CMND" required>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Gửi</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <form (ngSubmit)="DangNhap(taiKhoandangnhap.value,matKhaudangnhap.value)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Đăng nhập</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group taikhoan1">
+                        <input #taiKhoandangnhap class="form-control" placeholder="Tài khoản" required>
+                    </div>
+                    <div class="form-group matKhau2">
+                        <input #matKhaudangnhap type="password" class="form-control" placeholder="Mật khẩu" required>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" id="dangNhap" class="btn btn-success">Đăng nhập</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dangki">Đăng kí</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- chỉnh sửa thông tin -->
+<div class="modal fade" id="chinhsua">
+    <form [formGroup]="registerForm" (ngSubmit)="ChinhSua(diachics.value,hotencs.value,sodtcs.value,cmndcs.value,emailcs.value)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Chỉnh sửa</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Tài khoản</label>
+                        <input #taiKhoan class="form-control" placeholder="Tài khoản" readonly value="{{nguoiDung?.TaiKhoan}}"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Địa chỉ</label>
+                        <input #diachics class="form-control" placeholder="Địa chỉ" (change)="diachichange($event)"
+                            value="{{nguoiDung?.DiaChi}}" formControlName="diachi" [ngClass]="{ 'is-invalid': submitted && f.diachi.errors }">
+                        <div *ngIf="submitted && f.diachi.errors" class="invalid-feedback">
+                            <div *ngIf="f.diachi.errors.required">Vui lòng nhập địa chỉ</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Họ tên</label>
+                        <input #hotencs class="form-control" placeholder="Họ tên" (change)="hotenchange($event)" value="{{nguoiDung?.HoTen}}"
+                            formControlName="hoten" [ngClass]="{ 'is-invalid': submitted && f.hoten.errors }">
+                        <div *ngIf="submitted && f.hoten.errors" class="invalid-feedback">
+                            <div *ngIf="f.hoten.errors.required">Vui lòng nhập họ tên</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Số điện thoại</label>
+                        <input #sodtcs class="form-control" placeholder="SDT" (change)="sdtchange($event)" value="{{nguoiDung?.SoDT}}"
+                            formControlName="sodt" [ngClass]="{ 'is-invalid': submitted && f.sodt.errors }">
+                        <div *ngIf="submitted && f.sodt.errors" class="invalid-feedback">
+                            <div *ngIf="f.sodt.errors.required">Vui lòng nhập số điện thoại</div>
+                            <div *ngIf="f.sodt.errors.pattern">Chỉ nhập số</div>
+                            <div *ngIf="f.sodt.errors.minlength">10 số hoặc 11 số</div>
+                            <div *ngIf="f.sodt.errors.maxlength">10 số hoặc 11 số</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">CMND</label>
+                        <input #cmndcs class="form-control" placeholder="CMND" (change)="cmndchange($event)" value="{{nguoiDung?.CMND}}"
+                            formControlName="cmnd" [ngClass]="{ 'is-invalid': submitted && f.cmnd.errors }">
+                        <div *ngIf="submitted && f.cmnd.errors" class="invalid-feedback">
+                            <div *ngIf="f.cmnd.errors.required">Vui lòng nhập CMND</div>
+                            <div *ngIf="f.cmnd.errors.pattern">Chỉ nhập số</div>
+                            <div *ngIf="f.cmnd.errors.minlength">Chỉ 9 số</div>
+                            <div *ngIf="f.cmnd.errors.maxlength">Chỉ 9 số</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Email</label>
+                        <input #emailcs class="form-control" placeholder="Email" (change)="emailchange($event)" value="{{nguoiDung?.Email}}"
+                            formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">Vui lòng nhập email</div>
+                            <div *ngIf="f.email.errors.email">Sai cấu trúc email</div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- (ngSubmit)="DangKi(taiKhoandk.value,matkhaudk.value,diachidk.value,hotendk.value,sodtdk.value,cmnddk.value,emaildk.value)" -->
+
+<div class="modal fade" id="dangki">
+    <form [formGroup]="registerForm" (ngSubmit)="DangKi(taiKhoandk.value,matkhaudk.value,diachidk.value,hotendk.value,sodtdk.value,cmnddk.value,emaildk.value)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Đăng kí</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input #taiKhoandk class="form-control" placeholder="Tài khoản" formControlName="taikhoan"
+                            [ngClass]="{ 'is-invalid': submitted && f.taikhoan.errors }">
+                        <div *ngIf="submitted && f.taikhoan.errors" class="invalid-feedback">
+                            <div *ngIf="f.taikhoan.errors.required">Vui lòng nhập tài khoản</div>
+                            <div *ngIf="f.taikhoan.errors.pattern">Tài khoản chứa kí tự đặc biệt</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input #matkhaudk type="password" class="form-control" placeholder="Mật khẩu" formControlName="matkhau"
+                            [ngClass]="{ 'is-invalid': submitted && f.matkhau.errors }">
+                        <div *ngIf="submitted && f.matkhau.errors" class="invalid-feedback">
+                            <div *ngIf="f.matkhau.errors.required">Vui lòng nhập mật khẩu</div>
+                            <div *ngIf="f.matkhau.errors.minlength">Mật khẩu lớn hơn 5 kí tự</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input #diachidk class="form-control" placeholder="Địa chỉ" formControlName="diachi" [ngClass]="{ 'is-invalid': submitted && f.diachi.errors }">
+                        <div *ngIf="submitted && f.diachi.errors" class="invalid-feedback">
+                            <div *ngIf="f.diachi.errors.required">Vui lòng nhập địa chỉ</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input #hotendk class="form-control" placeholder="Họ tên" formControlName="hoten" [ngClass]="{ 'is-invalid': submitted && f.hoten.errors }">
+                        <div *ngIf="submitted && f.hoten.errors" class="invalid-feedback">
+                            <div *ngIf="f.hoten.errors.required">Vui lòng nhập họ tên</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input #sodtdk class="form-control" placeholder="SDT" formControlName="sodt" [ngClass]="{ 'is-invalid': submitted && f.sodt.errors }">
+                        <div *ngIf="submitted && f.sodt.errors" class="invalid-feedback">
+                            <div *ngIf="f.sodt.errors.required">Vui lòng nhập số điện thoại</div>
+                            <div *ngIf="f.sodt.errors.pattern">Chỉ nhập số</div>
+                            <div *ngIf="f.sodt.errors.minlength">10 số hoặc 11 số</div>
+                            <div *ngIf="f.sodt.errors.maxlength">10 số hoặc 11 số</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input #cmnddk class="form-control" placeholder="CMND" formControlName="cmnd" [ngClass]="{ 'is-invalid': submitted && f.cmnd.errors }">
+                        <div *ngIf="submitted && f.cmnd.errors" class="invalid-feedback">
+                            <div *ngIf="f.cmnd.errors.required">Vui lòng nhập CMND</div>
+                            <div *ngIf="f.cmnd.errors.pattern">Chỉ nhập số</div>
+                            <div *ngIf="f.cmnd.errors.minlength">Chỉ 9 số</div>
+                            <div *ngIf="f.cmnd.errors.maxlength">Chỉ 9 số</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input #emaildk class="form-control" placeholder="Email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">Vui lòng nhập email</div>
+                            <div *ngIf="f.email.errors.email">Sai cấu trúc email</div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Đăng kí</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="modal fade" id="doimatkhau">
+    <form [formGroup]="registerForm" (ngSubmit)="DoiMatKhau(matKhaucu.value,matKhaumoi.value,matKhauxacnhan.value)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Đổi mật khẩu</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input #matKhaucu type="password" class="form-control" placeholder="Mật khẩu cũ">
+                    </div>
+                    <div class="form-group">
+                        <input #matKhaumoi type="password" class="form-control" placeholder="Mật khẩu mới"
+                            formControlName="matkhau" [ngClass]="{ 'is-invalid': submitted && f.matkhau.errors }">
+                        <div *ngIf="submitted && f.matkhau.errors" class="invalid-feedback">
+                            <div *ngIf="f.matkhau.errors.required">Vui lòng nhập mật khẩu</div>
+                            <div *ngIf="f.matkhau.errors.minlength">Mật khẩu lớn hơn 5 kí tự</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input #matKhauxacnhan type="password" class="form-control" placeholder="Nhập lại mật khẩu mới"
+                        >
+                    
+                    </div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Đổi</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

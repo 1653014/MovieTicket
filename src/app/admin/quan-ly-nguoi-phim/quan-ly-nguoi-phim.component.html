@@ -1,0 +1,203 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-8">
+            <button class="btn btn-danger ml-2" (click)="XoaPhim()">Xóa Phim</button>
+            <button class="btn btn-success ml-2" data-toggle="modal" data-target="#themphim">Thêm phim</button>
+        </div>
+
+        <div class="col-md-4 timkiem">
+            <input type="text" placeholder="Tìm kiếm" [(ngModel)]="search">
+            <button>
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <table class="table mt-2">
+            <tr>
+                <th></th>
+                <th>Tên Phim</th>
+                <th>Mô tả</th>
+                <th>Mã Phim</th>
+                <th>Ngày khởi chiếu</th>
+                <th>Đánh giá</th>
+                <th>Hình Ảnh</th>
+                <th>Trailer</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let phim of dsPhim | start: search">
+                <td><input style="margin-left:4px" type="checkbox" (change)="layDSphimxoa($event,phim)" class="form-check-input"></td>
+                <td [innerHTML]="phim.TenPhim | highlight:search">{{phim.TenPhim}}</td>
+                <td>{{phim.MoTa}}</td>
+                <td [innerHTML]="phim.MaPhim | highlight:search">{{phim.MaPhim}}</td>
+                <td>{{phim.NgayKhoiChieu|date:'dd/MM/yyyy'}}</td>
+                <td>{{phim.DanhGia}}</td>
+                <td><img class="card-img-top" height="90px" width="70px" [src]="phim.HinhAnh" alt=""></td>
+                <td><iframe style="text-align:center" width="70" height="70" [src]="sanitizer.bypassSecurityTrustResourceUrl(phim.Trailer)"
+                        frameborder="0"></iframe></td>
+                <!-- <td>{{phim.Trailer}}</td> -->
+                <td><button class="btn btn-danger" (click)=getPhim(phim) data-toggle="modal" data-target="#chinhsuaphim">Chỉnh
+                        sửa</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="chinhsuaphim">
+    <form [formGroup]="registerForm" (ngSubmit)="AdminChinhSuaPhim(tenphim.value,mota.value,ngaykhoichieu.value,hinhanh.value,trailer.value,danhgia.value)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Chỉnh sửa</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã phim</label>
+                        <input #maphim class="form-control" placeholder="Mã phim" value="{{phim?.MaPhim}}" readonly
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Tên Phim</label>
+                        <input #tenphim class="form-control" (change)="tenphimchange()" placeholder="Tên phim" value="{{phim?.TenPhim}}" formControlName="tenphim"
+                            [ngClass]="{ 'is-invalid': submitted && f.tenphim.errors }">
+                        <div *ngIf="submitted && f.tenphim.errors" class="invalid-feedback">
+                            <div *ngIf="f.tenphim.errors.required">Vui lòng nhập tên phim</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Mô tả</label>
+                        <input #mota class="form-control" placeholder="Mô tả" (change)="motachange()" formControlName="mota" value="{{phim?.MoTa}}" [ngClass]="{ 'is-invalid': submitted && f.mota.errors }">
+                        <div *ngIf="submitted && f.mota.errors" class="invalid-feedback">
+                            <div *ngIf="f.mota.errors.required">Vui lòng nhập mô tả</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Ngày khởi chiếu</label>
+                        <input #ngaykhoichieu class="form-control" (change)="ngaykhoichieuchange()" placeholder="Ngày khởi chiếu" value="{{phim?.NgayKhoiChieu}}" formControlName="ngaykhoichieu"
+                            [ngClass]="{ 'is-invalid': submitted && f.ngaykhoichieu.errors }">
+                        <div *ngIf="submitted && f.ngaykhoichieu.errors" class="invalid-feedback">
+                            <div *ngIf="f.ngaykhoichieu.errors.required">Vui lòng nhập ngày khởi chiếu</div>
+                            <div *ngIf="f.ngaykhoichieu.errors.pattern">Chưa đúng format vd:2019-01-01</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Hình ảnh</label>
+                        <input #hinhanh class="form-control" (change)="hinhanhchange()" placeholder="Hình ảnh" value="{{phim?.HinhAnh}}" formControlName="hinhanh"
+                            [ngClass]="{ 'is-invalid': submitted && f.hinhanh.errors }">
+                        <div *ngIf="submitted && f.hinhanh.errors" class="invalid-feedback">
+                            <div *ngIf="f.hinhanh.errors.required">Vui lòng nhập hình ảnh</div>
+                            <div *ngIf="f.hinhanh.errors.pattern">Sai cấu trúc link</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Trailer</label>
+                        <input #trailer class="form-control"  (change)="trailerchange()" placeholder="Trailer" value="{{phim?.Trailer}}" formControlName="trailer" [ngClass]="{ 'is-invalid': submitted && f.trailer.errors }">
+                        <div *ngIf="submitted && f.trailer.errors" class="invalid-feedback">
+                            <div *ngIf="f.trailer.errors.required">Vui lòng nhập trailer</div>
+                            <div *ngIf="f.trailer.errors.pattern">Sai cấu trúc link</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Đánh giá</label>
+                        <input #danhgia class="form-control" (change)="danhgiachange()" placeholder="Đánh giá" value="{{phim?.DanhGia}}" formControlName="danhgia"
+                            [ngClass]="{ 'is-invalid': submitted && f.danhgia.errors }">
+                        <div *ngIf="submitted && f.danhgia.errors" class="invalid-feedback">
+                            <div *ngIf="f.danhgia.errors.required">Vui lòng nhập đánh giá</div>
+                            <div *ngIf="f.danhgia.errors.pattern">Chỉ nhập số 1 - 5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" >Chỉnh
+                        sửa</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="modal fade" id="themphim">
+    <form [formGroup]="registerForm" (ngSubmit)="ThemPhim(tenphimt.value,motat.value,ngaykhoichieut.value,hinhanht.value,trailert.value,danhgiat.value)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Thông tin phim</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Tên Phim</label>
+                        <input #tenphimt class="form-control" placeholder="Tên phim" formControlName="tenphim"
+                            [ngClass]="{ 'is-invalid': submitted && f.tenphim.errors }">
+                        <div *ngIf="submitted && f.tenphim.errors" class="invalid-feedback">
+                            <div *ngIf="f.tenphim.errors.required">Vui lòng nhập tên phim</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Mô tả</label>
+                        <input #motat class="form-control" placeholder="Mô tả" formControlName="mota" [ngClass]="{ 'is-invalid': submitted && f.mota.errors }">
+                        <div *ngIf="submitted && f.mota.errors" class="invalid-feedback">
+                            <div *ngIf="f.mota.errors.required">Vui lòng nhập mô tả</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Ngày khởi chiếu</label>
+                        <input #ngaykhoichieut class="form-control" placeholder="Ngày khởi chiếu" formControlName="ngaykhoichieu"
+                            [ngClass]="{ 'is-invalid': submitted && f.ngaykhoichieu.errors }">
+                        <div *ngIf="submitted && f.ngaykhoichieu.errors" class="invalid-feedback">
+                            <div *ngIf="f.ngaykhoichieu.errors.required">Vui lòng nhập ngày khởi chiếu</div>
+                            <div *ngIf="f.ngaykhoichieu.errors.pattern">Chưa đúng format vd:2019-01-01</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Hình ảnh</label>
+                        <input #hinhanht class="form-control" placeholder="Hình ảnh" formControlName="hinhanh"
+                            [ngClass]="{ 'is-invalid': submitted && f.hinhanh.errors }">
+                        <div *ngIf="submitted && f.hinhanh.errors" class="invalid-feedback">
+                            <div *ngIf="f.hinhanh.errors.required">Vui lòng nhập hình ảnh</div>
+                            <div *ngIf="f.hinhanh.errors.pattern">Sai cấu trúc link</div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Trailer</label>
+                        <input #trailert class="form-control" placeholder="Trailer" formControlName="trailer" [ngClass]="{ 'is-invalid': submitted && f.trailer.errors }">
+                        <div *ngIf="submitted && f.trailer.errors" class="invalid-feedback">
+                            <div *ngIf="f.trailer.errors.required">Vui lòng nhập trailer</div>
+                            <div *ngIf="f.trailer.errors.pattern">Sai cấu trúc link</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Đánh giá</label>
+                        <input #danhgiat class="form-control" placeholder="Đánh giá" formControlName="danhgia"
+                            [ngClass]="{ 'is-invalid': submitted && f.danhgia.errors }">
+                        <div *ngIf="submitted && f.danhgia.errors" class="invalid-feedback">
+                            <div *ngIf="f.danhgia.errors.required">Vui lòng nhập đánh giá</div>
+                            <div *ngIf="f.danhgia.errors.pattern">Chỉ nhập số 1 - 5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

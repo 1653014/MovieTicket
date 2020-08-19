@@ -1,0 +1,56 @@
+.container-fluid{
+    margin-top: 80px;
+    background-image: url(../../../assets/images/bachrow3.jpeg);
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+    color: white;
+}
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lichchieu{
+    margin-left: 5px;     
+}
+.lichchieu button{
+    width: 100px;     
+}
+
+.figue__2 button{
+    background-color: #228B22;
+    color: white;
+    border: 1px white solid;
+    height: 45px;
+    width: 130px;
+    border-radius: 10px;
+    transition: 1s all;
+    border: 1px white solid;
+    cursor: pointer;
+    
+}
+.figue__2 button:hover{
+    background-color: white;
+    color: black;
+    border: 1px #FF4500 solid;
+    
+}
+
+.figue__3 button{
+    background-color: #4169E1;
+    color: white;
+    border: 1px white solid;
+    height: 45px;
+    width: 130px;
+    border-radius: 10px;
+    transition: 1s all;
+    border: 1px white solid;
+    cursor: pointer;
+    
+}
+.figue__3 button:hover{
+    background-color: white;
+    color: black;
+    border: 1px #FF4500 solid;
+    
+}

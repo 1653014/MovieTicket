@@ -1,0 +1,38 @@
+<div class="container" style="margin-top: 80px">
+  <div class="row" >
+    <button class="btn btn-danger" (click)="HuyVe()">Hủy Vé</button>
+      <table class="table">
+          <tr>          
+              <th></th>
+              <th>Tên Phim</th>
+              <th>Ngày chiếu</th>
+              <th>Giờ chiếu</th>
+              <th>Mã vé</th>
+              <th>Mã ghế</th>
+              <th>Ngày đặt</th>
+              <th>Giá vé</th>
+              <th></th>
+          </tr>
+          <!-- <tr *ngFor="let ve of dsVe">
+              <td><input #check mave={MaVe} type="checkbox"  class="ckbXoaNguoiDung" value={ve.MaVe}></td>
+              <td>{{ve.MaVe}}</td>
+              <td>{{ve.MaGhe}}</td>
+              <td>{{ve.NgayDat | date:'dd/MM/yyyy'}} </td>
+              <td>{{ve.GiaVe}}</td>
+              <button class="btn btn-danger" (click)="HuyVe(ve)">Hủy Vé</button>
+          </tr> -->
+          
+           <tr *ngFor="let ve of dsVe">
+                    <td><input type="checkbox" (change)="layDShuy($event,ve)" class="form-check-input" ></td>
+                    <td>{{ve.TenPhim}}</td>
+                    <td>{{ve.NgayChieuGioChieu| date:'dd/MM'}}</td>
+                    <td>{{ve.NgayChieuGioChieu| date:'HH:mm'}}</td>
+                    <td>{{ve.MaVe}}</td>
+                    <td>{{ve.MaGhe}}</td>
+                    <td>{{ve.NgayDat | date:'dd/MM/yyyy'}} </td>
+                    <td>{{ve.GiaVe}}</td>
+                  
+             </tr> 
+      </table>
+      </div>
+</div>

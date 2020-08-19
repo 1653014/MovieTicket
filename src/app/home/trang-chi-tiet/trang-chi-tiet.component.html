@@ -1,0 +1,47 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-info">
+                <img class="card-img-top" height="450px" width="300px" [src]="phim.HinhAnh" alt="">
+            </div>
+
+        </div>
+        <div class="col-md-8">
+            <h3>{{phim.TenPhim}}</h3>
+            <p>{{phim.MoTa}}</p>
+            <h6>Thời lượng: {{phim.LichChieu &&phim.LichChieu[k].ThoiLuong}} phút</h6>
+            <h5 style="margin-left: 250px">Trailer</h5>
+            <iframe style="text-align:center" width="560" height="315" [src]="sanitizer.bypassSecurityTrustResourceUrl(phim.Trailer)"
+                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+    <h3 style="text-align:center">Lịch chiếu phim</h3>
+    <div class="row">
+        <div class="lichchieu figue__2"  *ngFor="let lichchieu of uniqueArray">
+            <button class="btn btn-success" (click)="getIndex(lichchieu)">{{lichchieu | date:'dd/MM'}}</button>
+        </div>
+    </div>
+    <div class="row mt-2" >
+        <div class="lichchieu figue__3" *ngFor="let hchieu of giochieu">
+            <button class="btn btn-dark" (click)="DatVe(hchieu)">{{hchieu.NgayChieuGioChieu| date:'HH:mm'}}</button>
+        </div>
+
+    </div>
+    <!-- <button   class="btn btn-dark"  >{{phim.LichChieu[i].NgayChieuGioChieu | date:'HH:mm'}}</button> -->
+
+    <!-- <div class="row">
+        <table class="table">
+            <tr>          
+                <th>Thời lượng</th>
+                <th>Ngày giờ chiếu</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let lichChieu of phim.LichChieu">
+                <td>{{lichChieu.ThoiLuong}} phút </td>
+                <td>{{lichChieu.NgayChieuGioChieu | date:'dd/MM/yyyy HH:mm'}} </td>
+                <td><button routerLink="/dat-ve" [queryParams]="{MaLichChieu:lichChieu.MaLichChieu}">Đặt vé</button></td>
+            </tr>
+        </table>
+    </div> -->
+</div>

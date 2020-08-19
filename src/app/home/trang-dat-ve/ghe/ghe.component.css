@@ -1,0 +1,21 @@
+.gheDaDat{
+    cursor: no-drop;
+    background: red;
+    color: #fff;
+    margin: 5px;
+    width: 45px;
+    height: 45px;
+}
+.gheDangDat{
+    background: green !important;
+
+}
+.ghe{
+    cursor: pointer;
+    background: darkgray;
+    color: #fff;
+    margin: 5px;
+    width: 45px;
+    height: 45px;
+    border-radius: 5px;
+}

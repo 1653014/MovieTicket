@@ -1,0 +1,24 @@
+<!-- <app-danhsachghe [danhSachGhe]="lichChieu.DanhSachGhe"></app-danhsachghe> -->
+<div class="container" style="margin-top:80px">
+    <div class="row">
+        <div class="col-md-8">
+                <h4>Rạp: {{lichChieu.DanhSachGhe &&lichChieu.DanhSachGhe[0].MaRap }}</h4>
+                <h4 style="margin-left: 220px">Màn hình</h4>
+                <app-ghe (eventDatGhe)="DatGhe($event)" [ghe]="ghe" *ngFor="let ghe of lichChieu.DanhSachGhe;let i = index">
+                    <br *ngIf="(i+1)%10 == 0 " />
+                </app-ghe>
+        </div>
+           <div class="col-md-4" style="margin-top: 40px">
+               <h4>Danh sách vé</h4>
+               <div *ngFor="let ghe of DanhSachGheDuocDat" >
+                   <span>Ghế {{ghe.MaGhe}} | Giá {{ghe.GiaVe}} VNĐ</span>
+               </div>
+               <div *ngIf="coghe">
+                    <hr>
+                    <span>Tổng tiền: {{tongtien}} VNĐ</span><br>
+                <button (click)="DatVe()" class="btn btn-success">Đặt vé</button>
+               </div>
+           </div>
+    </div>
+    
+</div>

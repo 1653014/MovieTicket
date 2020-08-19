@@ -1,0 +1,55 @@
+<div class="grid-container">
+    <!-- <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-primary">
+            <a class="navbar-brand" href="#">Admin</a>
+            <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" routerLink="/admin/quan-ly-nguoi-dung">Quản lý người dùng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin/quan-ly-phim">Quản lý phim</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="DangXuat()">Đăng xuất</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header> -->
+    <aside class="left-sidebar">
+        <div style="margin-top:5px">
+            <i id="avatar" class="fa fa-user-circle fa-5x" data-toggle="dropdown" style="cursor:pointer"></i>
+            <div style="margin-left:5px;margin-top:5px;color: gray">
+                    <p style="height:10px">Tên admin: {{nguoiDung.HoTen}}</p>
+                    <p style="height:10px">Số điện thoại: {{nguoiDung.SoDT}} </p>
+                    <p style="height:10px">Email: {{nguoiDung.Email}} </p>
+            </div>
+            
+        </div>
+                <!-- Sidebar scroll-->
+                <div class="scroll-sidebar">
+                    <!-- Sidebar navigation-->
+                    <nav class="sidebar-nav">
+                        <ul id="sidebarnav">
+                            <li> <a class="waves-effect waves-dark" routerLink="/admin/quan-ly-nguoi-dung" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Quản lí người dùng</span></a>
+                            </li>
+                            <li> <a class="waves-effect waves-dark" routerLink="/admin/quan-ly-phim" aria-expanded="false"><i class="fa fa-video-camera"></i><span class="hide-menu">Quản lí phim</span></a>
+                            </li>
+                            <li> <a class="waves-effect waves-dark" (click)="DangXuat()" href="" aria-expanded="false"><i class="fa fa-sign-out"></i><span class="hide-menu">Đăng xuất</span></a>
+                            </li>
+                        </ul>
+                        
+                    </nav>
+                    <!-- End Sidebar navigation -->
+                </div>
+                <!-- End Sidebar scroll-->
+    </aside>
+    <main>
+        <router-outlet></router-outlet>
+    </main>
+    <!-- <footer class="bg-dark py-3">
+        <h6 class="text-center text-white">Footer</h6>
+    </footer> -->
+</div>

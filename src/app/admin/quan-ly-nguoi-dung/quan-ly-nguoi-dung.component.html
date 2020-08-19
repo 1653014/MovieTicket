@@ -1,0 +1,287 @@
+<div class="container mt-3" >
+    <div class="row" >
+        <div class="col-md-8">
+                <button class="btn btn-danger ml-2" (click)="XoaUser()">Xóa User</button>
+                <button class="btn btn-success ml-2" data-toggle="modal" data-target="#themuser">Thêm người dùng</button>
+        </div>
+      
+      <div class="col-md-4 timkiem">
+        <input type="text" placeholder="Tìm kiếm" [(ngModel)]="searchText">
+        <button>
+            <i class="fa fa-search"></i>
+        </button>
+      </div>  
+      
+      <table class="table mt-2">
+            <tr>          
+                <th></th>
+                <th>Tài khoản</th>
+                <th>Mật khẩu</th>
+                <th>Họ tên</th>
+                <th>Địa chỉ</th>
+                <th>Loại người dùng</th>
+                <th>CMND</th>
+                <th>Email</th>
+                <th>SoDT</th>
+                <th></th>
+            </tr>
+             <tr *ngFor="let user of dsUSer | startsWith : searchText; let i  = index">
+                      <td ><input style="margin-left:4px" type="checkbox" (change)="layDSxoa($event,user)" class="form-check-input" ></td>
+                      <td [innerHTML]="user.TaiKhoan | highlight:searchText">{{user.TaiKhoan}}</td>
+                      <td>{{user.MatKhau}}</td>
+                      <td [innerHTML]="user.HoTen | highlight:searchText">{{user.HoTen}}</td>
+                      <td>{{user.DiaChi}}</td>
+                      <td>{{user.LoaiNguoiDung}}</td>
+                      <td [innerHTML]="user.CMND | highlight:searchText">{{user.CMND}}</td>
+                      <td [innerHTML]="user.Email | highlight:searchText">{{user.Email}}</td>
+                      <td [innerHTML]="user.SoDT | highlight:searchText">{{user.SoDT}}</td>
+                      <td><button class="btn btn-danger" (click)=getUser(user) data-toggle="modal" data-target="#chinhsuaadmin">Chỉnh sửa</button></td>
+                    
+               </tr> 
+        </table>
+        </div>
+  </div>
+
+  <!-- <div class="modal fade" id="chinhsuaadmin">
+    <form >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                Modal Header
+                <div class="modal-header">
+                    <h4 class="modal-title">Chỉnh sửa</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                Modal body
+                <div class="modal-body">
+                    <div class="form-group">
+                       <label >Tài khoản:</label>
+                       <input #taiKhoan3 class="form-control" placeholder="Tài khoản"  value="{{edituser?.TaiKhoan}}" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Mật khẩu:</label>
+                        <input #matkhaund class="form-control" placeholder="Mật khẩu" value="{{edituser?.MatKhau}}" >
+                    </div>
+                    <div class="form-group">
+                        <label for="">Địa chỉ</label>
+                        <input #diachind class="form-control" placeholder="Địa chỉ" value="{{edituser?.DiaChi}}" >
+                    </div>
+                    <div class="form-group">
+                        <label for="">Họ tên</label>
+                        <input #hotennd class="form-control" placeholder="Họ tên" value="{{edituser?.HoTen}}"required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Số điện thoại</label>
+                        <input #sodtnd class="form-control" placeholder="SDT" value="{{edituser?.SoDT}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">CMND</label>
+                        <input #cmndnd class="form-control" placeholder="CMND" value="{{edituser?.CMND}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Loại người dùng</label>
+                        <input #loainguoidungnd class="form-control" placeholder="Loại người dùng" value="{{edituser?.LoaiNguoiDung}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Email</label>
+                        <input #emailnd class="form-control" placeholder="Email" value="{{edituser?.Email}}" required>
+                    </div>
+                    
+
+                </div>
+
+                Modal footer
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" (click)="AdminChinhSua(matkhaund.value,diachind.value,hotennd.value,sodtnd.value,cmndnd.value,emailnd.value,loainguoidungnd.value)">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div> -->
+
+<div class="modal fade" id="chinhsuaadmin">
+        <form [formGroup]="registerForm" (ngSubmit)="AdminChinhSua(matkhaund.value,diachind.value,hotennd.value,sodtnd.value,cmndnd.value,emailnd.value,loainguoidungnd.value)">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Chỉnh sửa</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+    
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="">Tài khoản</label>
+                            <input #taiKhoan3 class="form-control" placeholder="Tài khoản" readonly value="{{edituser?.TaiKhoan}}"
+                                >
+                        </div>
+                        <div class="form-group">
+                                <label for="">Mật khẩu</label>
+                                <input #matkhaund class="form-control" placeholder="Mật khẩu"(change)="matkhauchange($event)" value="{{edituser?.MatKhau}}" formControlName="matkhau"
+                                [ngClass]="{ 'is-invalid': submitted && f.matkhau.errors }">
+                            <div *ngIf="submitted && f.matkhau.errors" class="invalid-feedback">
+                                <div *ngIf="f.matkhau.errors.required">Vui lòng nhập mật khẩu</div>
+                                <div *ngIf="f.matkhau.errors.minlength">Mật khẩu lớn hơn 5 kí tự</div>
+                            </div>
+                            </div>
+                        <div class="form-group">
+                            <label for="">Địa chỉ</label>
+                            <input #diachind class="form-control" placeholder="Địa chỉ" (change)="diachichange($event)" value="{{edituser?.DiaChi}}"
+                            formControlName="diachi" [ngClass]="{ 'is-invalid': submitted && f.diachi.errors }">
+                            <div *ngIf="submitted && f.diachi.errors" class="invalid-feedback">
+                                <div *ngIf="f.diachi.errors.required">Vui lòng nhập địa chỉ</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Họ tên</label>
+                            <input #hotennd class="form-control" placeholder="Họ tên" (change)="hotenchange($event)" value="{{edituser?.HoTen}}"  formControlName="hoten" [ngClass]="{ 'is-invalid': submitted && f.hoten.errors }">
+                            <div *ngIf="submitted && f.hoten.errors" class="invalid-feedback">
+                                <div *ngIf="f.hoten.errors.required">Vui lòng nhập họ tên</div>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Số điện thoại</label>
+                            <input #sodtnd class="form-control" placeholder="SDT" (change)="sdtchange($event)" value="{{edituser?.SoDT}}" formControlName="sodt" [ngClass]="{ 'is-invalid': submitted && f.sodt.errors }">
+                            <div *ngIf="submitted && f.sodt.errors" class="invalid-feedback">
+                                <div *ngIf="f.sodt.errors.required">Vui lòng nhập số điện thoại</div>
+                                <div *ngIf="f.sodt.errors.pattern">Chỉ nhập số</div>
+                                <div *ngIf="f.sodt.errors.minlength">10 số hoặc 11 số</div>
+                                <div *ngIf="f.sodt.errors.maxlength">10 số hoặc 11 số</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">CMND</label>
+                            <input #cmndnd class="form-control" placeholder="CMND" (change)="cmndchange($event)" value="{{edituser?.CMND}}" formControlName="cmnd" [ngClass]="{ 'is-invalid': submitted && f.cmnd.errors }">
+                            <div *ngIf="submitted && f.cmnd.errors" class="invalid-feedback">
+                                <div *ngIf="f.cmnd.errors.required">Vui lòng nhập CMND</div>
+                                <div *ngIf="f.cmnd.errors.pattern">Chỉ nhập số</div>
+                                <div *ngIf="f.cmnd.errors.minlength">Chỉ 9 số</div>
+                                <div *ngIf="f.cmnd.errors.maxlength">Chỉ 9 số</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Email</label>
+                            <input #emailnd class="form-control" placeholder="Email" (change)="emailchange($event)" value="{{edituser?.Email}}" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">Vui lòng nhập email</div>
+                                <div *ngIf="f.email.errors.email">Sai cấu trúc email</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <label for="">Loại người dùng</label>
+                                <input #loainguoidungnd class="form-control" (change)="loainguoidungchange($event)" placeholder="Loại người dùng" value="{{edituser?.LoaiNguoiDung}}"
+                                formControlName="loainguoidung" [ngClass]="{ 'is-invalid': submitted && f.loainguoidung.errors }">
+                                <div *ngIf="submitted && f.loainguoidung.errors" class="invalid-feedback">
+                                    <div *ngIf="f.loainguoidung.errors.required">Vui lòng nhập người dùng</div>
+                                    
+                                </div>
+                                <div  style="color:red;font-size: 13px" *ngIf="lnd">Chỉ nhập Admin hoặc ThanhVien</div>
+                        </div>
+    
+    
+                    </div>
+    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Cập nhật</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+    
+                </div>
+            </div>
+        </form>
+    </div>
+
+<!-- Thêm người dùng -->
+<div class="modal fade" id="themuser">
+        <form [formGroup]="registerForm" (ngSubmit)="ThemUser(taiKhoandkad.value,matkhaudkad.value,diachidkad.value,hotendkad.value,sodtdkad.value,cmnddkad.value,emaildkad.value,loainguoidungad.value)">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Thông tin người dùng</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+    
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input #taiKhoandkad class="form-control" placeholder="Tài khoản" formControlName="taikhoan" [ngClass]="{ 'is-invalid': submitted && f.taikhoan.errors }">
+                            <div *ngIf="submitted && f.taikhoan.errors" class="invalid-feedback">
+                                <div *ngIf="f.taikhoan.errors.required">Vui lòng nhập tài khoản</div>
+                                <div *ngIf="f.taikhoan.errors.pattern">Tài khoản chứa kí tự đặc biệt</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input #matkhaudkad class="form-control" placeholder="Mật khẩu" formControlName="matkhau"
+                            [ngClass]="{ 'is-invalid': submitted && f.matkhau.errors }">
+                        <div *ngIf="submitted && f.matkhau.errors" class="invalid-feedback">
+                            <div *ngIf="f.matkhau.errors.required">Vui lòng nhập mật khẩu</div>
+                            <div *ngIf="f.matkhau.errors.minlength">Mật khẩu lớn hơn 5 kí tự</div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                                <input #loainguoidungad class="form-control" (change)="loainguoidungchange($event)" placeholder="Loại người dùng" formControlName="loainguoidung" [ngClass]="{ 'is-invalid': submitted && f.loainguoidung.errors }">
+                                <div *ngIf="submitted && f.loainguoidung.errors" class="invalid-feedback">
+                                    <div *ngIf="f.loainguoidung.errors.required">Vui lòng nhập người dùng</div>
+                                    
+                                </div>
+                                <div  style="color:red;font-size: 13px" *ngIf="lnd">Chỉ nhập Admin hoặc ThanhVien</div>
+
+                            </div>
+                        <div class="form-group">
+                            <input #diachidkad class="form-control" placeholder="Địa chỉ" formControlName="diachi" [ngClass]="{ 'is-invalid': submitted && f.diachi.errors }">
+                            <div *ngIf="submitted && f.diachi.errors" class="invalid-feedback">
+                                <div *ngIf="f.diachi.errors.required">Vui lòng nhập địa chỉ</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input #hotendkad class="form-control" placeholder="Họ tên" formControlName="hoten" [ngClass]="{ 'is-invalid': submitted && f.hoten.errors }">
+                            <div *ngIf="submitted && f.hoten.errors" class="invalid-feedback">
+                                <div *ngIf="f.hoten.errors.required">Vui lòng nhập họ tên</div>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input #sodtdkad class="form-control" placeholder="SDT" formControlName="sodt" [ngClass]="{ 'is-invalid': submitted && f.sodt.errors }">
+                            <div *ngIf="submitted && f.sodt.errors" class="invalid-feedback">
+                                <div *ngIf="f.sodt.errors.required">Vui lòng nhập số điện thoại</div>
+                                <div *ngIf="f.sodt.errors.pattern">Chỉ nhập số</div>
+                                <div *ngIf="f.sodt.errors.minlength">10 số hoặc 11 số</div>
+                                <div *ngIf="f.sodt.errors.maxlength">10 số hoặc 11 số</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input #cmnddkad class="form-control" placeholder="CMND" formControlName="cmnd" [ngClass]="{ 'is-invalid': submitted && f.cmnd.errors }">
+                            <div *ngIf="submitted && f.cmnd.errors" class="invalid-feedback">
+                                <div *ngIf="f.cmnd.errors.required">Vui lòng nhập CMND</div>
+                                <div *ngIf="f.cmnd.errors.pattern">Chỉ nhập số</div>
+                                <div *ngIf="f.cmnd.errors.minlength">Chỉ 9 số</div>
+                                <div *ngIf="f.cmnd.errors.maxlength">Chỉ 9 số</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input #emaildkad class="form-control" placeholder="Email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">Vui lòng nhập email</div>
+                                <div *ngIf="f.email.errors.email">Sai cấu trúc email</div>
+                            </div>
+                        </div>
+                        
+    
+                    </div>
+    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" >Thêm user</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+    
+                </div>
+            </div>
+        </form>
+    </div>
